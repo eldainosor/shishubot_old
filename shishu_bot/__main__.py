@@ -1,7 +1,9 @@
 from shishu_bot.config import Config
 from telegram.ext import Updater, CommandHandler
+import logging
 
 TOKEN = Config.API_KEY
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
