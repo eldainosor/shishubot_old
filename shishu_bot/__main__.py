@@ -1,9 +1,14 @@
-from shishu_bot.config import Config
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import Updater, CommandHandler
-import logging, re, urllib.request
+import logging, os, re, urllib.request
 
-TOKEN = Config.API_KEY
+ENV = bool(os.environ.get('ENV', False))
+if ENV:
+    TOKEN = os.environ.get('TOKEN', None)
+else:
+    from shishu_bot.config import Config
+    TOKEN = Config.API_KEY
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 updater = Updater(token=TOKEN)
