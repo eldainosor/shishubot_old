@@ -36,7 +36,7 @@ def build_menu(buttons, n_cols, header_buttons=None, footer_buttons=None):
 # callback function for start handler
 def start_callback(bot, update):
     if update.message.chat.type=="private":
-        bot.send_message(chat_id=update.message.chat_id, text="Hi there")
+        bot.send_message(chat_id=update.message.chat_id, text="Hi there", reply_to_message_id=update.message.message_id)
 
 # callback function for device handler
 def device_callback(bot, update, args):
@@ -44,7 +44,7 @@ def device_callback(bot, update, args):
     ota_raw = get_ota_raw(codename, bot, update)
     if ota_raw == 1:
         reply="Sorry, but "+codename+" isn't on our official devices list"
-        bot.send_message(chat_id=update.message.chat.id, text=reply)
+        bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
 
     maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
     filename = re.findall(r"\\nfilename: (.*?)\\n", ota_raw)[0]
@@ -62,7 +62,7 @@ def device_callback(bot, update, args):
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
     reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
 
-    bot.send_message(chat_id=update.message.chat_id, text=reply_text, parse_mode=ParseMode.MARKDOWN, reply_markup=reply_buttons)
+    bot.send_message(chat_id=update.message.chat_id, text=reply_text, parse_mode=ParseMode.MARKDOWN, reply_markup=reply_buttons, reply_to_message_id=update.message.message_id)
 
 start_handler = CommandHandler('start', start_callback)
 device_handler = CommandHandler('device', device_callback, pass_args=True)
