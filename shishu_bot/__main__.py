@@ -1,4 +1,5 @@
 from shishu_bot.config import Config
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler
 import logging, re, urllib.request
 
@@ -14,6 +15,14 @@ def get_ota_raw(codename):
     ota_resp = urllib.request.urlopen(ota_req)
     ota_raw = ota_resp.read()
     return str(ota_raw)
+
+def build_menu(buttons, n_cols, header_buttons=None, footer_buttons=None):
+    menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
+    if header_buttons:
+        menu.insert(0, [header_buttons])
+    if footer_buttons:
+        menu.append([footer_buttons])
+    return menu
 
 # callback function for start handler
 def start_callback(bot, update):
@@ -32,6 +41,13 @@ def device_callback(bot, update, args):
     latest = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/"+filename
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
+    button_list = [
+    InlineKeyboardButton("XDA Thread", url=xdathread),
+    InlineKeyboardButton("Latest Build", url=latest),
+    InlineKeyboardButton("All Builds", url=builds)
+    ]
+
+    reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
     reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
 
 start_handler = CommandHandler('start', start_callback)
