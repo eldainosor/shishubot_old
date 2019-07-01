@@ -32,6 +32,8 @@ def device_callback(bot, update, args):
     latest = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/"+filename
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
+    reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
+
 start_handler = CommandHandler('start', start_callback)
 device_handler = CommandHandler('device', device_callback, pass_args=True)
 
