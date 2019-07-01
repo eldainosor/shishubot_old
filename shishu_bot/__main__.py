@@ -1,5 +1,5 @@
 from shishu_bot.config import Config
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import Updater, CommandHandler
 import logging, re, urllib.request
 
@@ -49,6 +49,8 @@ def device_callback(bot, update, args):
 
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
     reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
+
+    bot.send_message(chat_id=update.message.chat_id, text=reply_text, parse_mode=ParseMode.MARKDOWN, reply_markup=reply_buttons)
 
 start_handler = CommandHandler('start', start_callback)
 device_handler = CommandHandler('device', device_callback, pass_args=True)
