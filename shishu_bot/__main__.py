@@ -14,12 +14,16 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
-def get_ota_raw(codename):
+def get_ota_raw(codename, bot, update):
     ota_url = "https://raw.githubusercontent.com/BootleggersROM-Devices/BootleggersROM-Devices.github.io/master/_devices/"+codename+".md"
     ota_req = urllib.request.Request(ota_url)
-    ota_resp = urllib.request.urlopen(ota_req)
-    ota_raw = ota_resp.read()
-    return str(ota_raw)
+    try:
+        ota_resp = urllib.request.urlopen(ota_req)
+    except:
+        return 1
+    else:
+        ota_raw = ota_resp.read()
+        return str(ota_raw)
 
 def build_menu(buttons, n_cols, header_buttons=None, footer_buttons=None):
     menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
@@ -37,7 +41,10 @@ def start_callback(bot, update):
 # callback function for device handler
 def device_callback(bot, update, args):
     codename = args[0]
-    ota_raw = get_ota_raw(codename)
+    ota_raw = get_ota_raw(codename, bot, update)
+    if ota_raw == 1:
+        reply="Sorry, but "+codename+" isn't on our official devices list"
+        bot.send_message(chat_id=update.message.chat.id, text=reply)
 
     maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
     filename = re.findall(r"\\nfilename: (.*?)\\n", ota_raw)[0]
