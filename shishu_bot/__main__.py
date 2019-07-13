@@ -80,7 +80,7 @@ def devicelist_callback(bot, update):
   print(infoDevList)
   #if infoDevList = "":
   #  infoDevListmsg = "Sorry, but there's no official devices yet.
-  bot.send_message(chat_id=update.message.chat_id, text=infoDevList, parse_mode=ParseMode.HTML, reply_markup=reply_buttons, reply_to_message_id=update.message.message_id)
+  bot.send_message(chat_id=update.message.chat_id, text=infoDevList, parse_mode=ParseMode.HTML, reply_to_message_id=update.message.message_id)
 
 start_handler = CommandHandler('start', start_callback)
 devicelist_handler = CommandHandler('devicelist', devicelist_callback)
