@@ -1,6 +1,6 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import Updater, CommandHandler
-import logging, os, re, urllib.request
+import logging, os, re, urllib.request, json
 
 ENV = bool(os.environ.get('ENV', False))
 if ENV:
@@ -68,10 +68,26 @@ def device_callback(bot, update, args):
 
     bot.send_message(chat_id=update.message.chat_id, text=reply_text, parse_mode=ParseMode.MARKDOWN, reply_markup=reply_buttons, reply_to_message_id=update.message.message_id)
 
+# callback function for device list handler
+def devicelist_callback(bot, update):
+  # Check this every time because we update info very often
+  with urllib.request.urlopen("https://bootleggersrom-devices.github.io/api/devices.json") as url:
+    data = json.loads(url.read().decode())
+  message = update.effective_message
+  infoDevList = "<b>List of our currently supported devices:</b>"
+  for key in data:
+    infoDevList += "\n- " + key
+  print(infoDevList)
+  #if infoDevList = "":
+  #  infoDevListmsg = "Sorry, but there's no official devices yet.
+  bot.send_message(chat_id=update.message.chat_id, text=infoDevList, parse_mode=ParseMode.HTML, reply_markup=reply_buttons, reply_to_message_id=update.message.message_id)
+
 start_handler = CommandHandler('start', start_callback)
+devicelist_handler = CommandHandler('devicelist', devicelist_callback)
 device_handler = CommandHandler('device', device_callback, pass_args=True)
 
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(device_handler)
+dispatcher.add_handler(devicelist_handler)
 
 updater.start_polling()
