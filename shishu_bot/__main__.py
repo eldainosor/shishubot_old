@@ -76,7 +76,7 @@ def devicelist_callback(bot, update):
   message = update.effective_message
   infoDevList = "<b>List of our currently supported devices:</b>"
   for key in data:
-    infoDevList += "\n- " + key
+    infoDevList += "\n· " + key
   print(infoDevList)
   #if infoDevList = "":
   #  infoDevListmsg = "Sorry, but there's no official devices yet.
