@@ -57,11 +57,14 @@ def device_callback(bot, update, args):
     latest = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/"+filename
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
-    button_list = [
-    InlineKeyboardButton("XDA Thread", url=xdathread),
+    button_list = []
+    if "xda-developers" in xdathread:
+        button_list.extend([InlineKeyboardButton("XDA Thread", url=xdathread)])
+
+    button_list.extend([
     InlineKeyboardButton("Latest Build", url=latest),
     InlineKeyboardButton("All Builds", url=builds)
-    ]
+    ])
 
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
     reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
