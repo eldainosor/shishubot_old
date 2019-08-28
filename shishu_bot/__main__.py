@@ -93,9 +93,11 @@ def devicelist_callback(bot, update):
 start_handler = CommandHandler('start', start_callback)
 devicelist_handler = CommandHandler('devicelist', devicelist_callback)
 device_handler = CommandHandler('device', device_callback, pass_args=True)
+devices_handler = CommandHandler('devices', devicelist_callback)
 
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(device_handler)
 dispatcher.add_handler(devicelist_handler)
+dispatcher.add_handler(devices_handler)
 
 updater.start_polling()
