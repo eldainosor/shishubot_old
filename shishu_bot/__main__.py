@@ -41,14 +41,19 @@ def start_callback(bot, update):
 # callback function for device handler
 def device_callback(bot, update, args):
     if len(args) <= 0:
-        reply="You're getting there, but to use this command, be sure to specify your device. For example: `/device surnia`"
+        reply="You're getting there, but to use this command, be sure to specify your device. For example: `/device surnia`. Or, if you want to know all our shishufied (and currently supported) devices, use `/devicelist` or `/device list`."
         bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id,parse_mode="Markdown")
 
     codename = args[0]
-    ota_raw = get_ota_raw(codename, bot, update)
-    if ota_raw == 1:
-        reply="Sorry, but "+codename+" isn't on our official devices list"
-        bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
+    if "list" in codename:
+        devicelist_callback(bot, update)
+        return
+    else:
+        ota_raw = get_ota_raw(codename, bot, update)
+        if ota_raw == 1:
+            reply="Sorry, but "+codename+" isn't on our official devices list"
+            bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
+
 
     maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
     filename = re.findall(r"\\nfilename: (.*?)\\n", ota_raw)[0]
