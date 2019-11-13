@@ -74,6 +74,7 @@ def device_callback(bot, update, args):
         else:
             ota_raw = get_ota_raw(codename, bot, update)
             if ota_raw == 1:
+                isBeta = false
                 reply="Sorry, but "+codename+" isn't on our official devices list"
                 bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
 
@@ -89,10 +90,10 @@ def device_callback(bot, update, args):
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
     button_list = []
-    if ("xda-developers" in xdathread) and (isBeta = false)
+    if ("xda-developers" in xdathread) and (isBeta == false)
         button_list.extend([InlineKeyboardButton("XDA Thread", url=xdathread)])
 
-    if (isBeta = true):
+    if (isBeta == true):
         button_list.extend([
         InlineKeyboardButton("Latest Build", url=latestbeta),
         InlineKeyboardButton("Beta Builds", url=betabuilds),
@@ -105,7 +106,7 @@ def device_callback(bot, update, args):
         ])
 
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
-    if (isBeta = false):
+    if (isBeta == false):
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
     else:
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\n*DISCLAIMER:* This is a beta build just for testing. Please, don't pull a Xiaomi Global on us and send logs when things gets broken.*\n*Maintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
