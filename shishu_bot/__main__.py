@@ -14,6 +14,17 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 updater = Updater(token=TOKEN)
 dispatcher = updater.dispatcher
 
+def get_beta_ota_raw(codename, bot, update):
+    ota_url = "https://raw.githubusercontent.com/BootleggersROM-Devices/BootleggersROM-Devices.github.io/master/_devicesbeta/"+codename+".md"
+    ota_req = urllib.request.Request(ota_url)
+    try:
+        ota_resp = urllib.request.urlopen(ota_req)
+    except:
+        return 1
+    else:
+        ota_raw = ota_resp.read()
+        return str(ota_raw)
+
 def get_ota_raw(codename, bot, update):
     ota_url = "https://raw.githubusercontent.com/BootleggersROM-Devices/BootleggersROM-Devices.github.io/master/_devices/"+codename+".md"
     ota_req = urllib.request.Request(ota_url)
@@ -45,34 +56,59 @@ def device_callback(bot, update, args):
         bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id,parse_mode="Markdown")
 
     codename = args[0]
+    extraArgs = args[1]
+
     if "list" in codename:
         devicelist_callback(bot, update)
         return
     else:
-        ota_raw = get_ota_raw(codename, bot, update)
-        if ota_raw == 1:
-            reply="Sorry, but "+codename+" isn't on our official devices list"
-            bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
+        if "beta" in extraArgs:
+            isBeta = true
+            ota_raw = get_beta_ota_raw(codename, bot, update)
+            if ota_raw == 1:
+                ota_raw = get_ota_raw(codename, bot, update)
+                isBeta = false
+                if ota_raw == 1:
+                    reply="Sorry, but "+codename+" isn't on our official devices list"
+                    bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
+        else:
+            ota_raw = get_ota_raw(codename, bot, update)
+            if ota_raw == 1:
+                reply="Sorry, but "+codename+" isn't on our official devices list"
+                bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
 
 
     maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
     filename = re.findall(r"\\nfilename: (.*?)\\n", ota_raw)[0]
     fullname = re.findall(r"\\nfullname: (.*?)\\n", ota_raw)[0]
     xdathread = re.findall(r"\\nxdathread: (.*?)\\n", ota_raw)[0]
+    notes = re.findall(r"\\nnotes: (.*?)\\n", ota_raw)[0]
     latest = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/"+filename
+    latestbeta = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta/"+filename
+    betabuilds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
     button_list = []
-    if "xda-developers" in xdathread:
+    if ("xda-developers" in xdathread) and (not isBeta)
         button_list.extend([InlineKeyboardButton("XDA Thread", url=xdathread)])
 
-    button_list.extend([
-    InlineKeyboardButton("Latest Build", url=latest),
-    InlineKeyboardButton("All Builds", url=builds)
-    ])
+    if (isBeta = true):
+        button_list.extend([
+        InlineKeyboardButton("Latest Build", url=latestbeta),
+        InlineKeyboardButton("Beta Builds", url=betabuilds),
+        InlineKeyboardButton("Stable builds", url=builds)
+        ])
+    else:
+        button_list.extend([
+        InlineKeyboardButton("Latest Build", url=latest),
+        InlineKeyboardButton("All Builds", url=builds)
+        ])
 
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
-    reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
+    if (isBeta = false):
+        reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
+    else:
+        reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\n*DISCLAIMER:* This is a beta build just for testing. Please, don't pull a Xiaomi Global on us and send logs when things gets broken.*\n*Maintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
 
     bot.send_message(chat_id=update.message.chat_id, text=reply_text, parse_mode=ParseMode.MARKDOWN, reply_markup=reply_buttons, reply_to_message_id=update.message.message_id)
 
