@@ -85,7 +85,7 @@ def device_callback(bot, update, args):
     notes = re.findall(r"\\nnotes: (.*?)\\n", ota_raw)[0]
     latest = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/"+filename
     latestbeta = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta/"+filename
-    betabuilds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta
+    betabuilds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta"
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
     button_list = []
