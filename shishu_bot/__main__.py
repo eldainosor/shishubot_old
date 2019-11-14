@@ -90,7 +90,7 @@ def device_callback(bot, update, args):
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
     button_list = []
-    if ("xda-developers" in xdathread) and (isBeta == false)
+    if ("xda-developers" in xdathread) and (isBeta == false):
         button_list.extend([InlineKeyboardButton("XDA Thread", url=xdathread)])
 
     if (isBeta == true):
