@@ -54,6 +54,7 @@ def device_callback(bot, update, args):
     if len(args) <= 0:
         reply="You're getting there, but to use this command, be sure to specify your device. For example: `/device surnia`, or, in case you want a beta version you can specify beta after your device name (For example: `/device surnia beta`) . Or, if you want to know all our shishufied (and currently supported) devices, use `/devicelist` or `/device list`."
         bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id,parse_mode="Markdown")
+        return
 
     codename = args[0]
     try:
@@ -74,12 +75,14 @@ def device_callback(bot, update, args):
                 if ota_raw == 1:
                     reply="Sorry, but "+codename+" isn't on our official devices list"
                     bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
+                    return
         else:
             ota_raw = get_ota_raw(codename, bot, update)
             if ota_raw == 1:
                 isBeta = False
                 reply="Sorry, but "+codename+" isn't on our official devices list"
                 bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
+                return
 
     try:
         maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
