@@ -111,7 +111,7 @@ def device_callback(bot, update, args):
     if ("xda-developers" in xdathread) and (not "beta" in extraArgs):
         button_list.extend([InlineKeyboardButton("XDA Thread", url=xdathread)])
 
-    if (isBeta == True):
+    if ("beta" in extraArgs):
         button_list.extend([
         InlineKeyboardButton("Latest Build", url=latestbeta),
         InlineKeyboardButton("Beta Builds", url=betabuilds),
@@ -124,7 +124,7 @@ def device_callback(bot, update, args):
         ])
 
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
-    if (isBeta == False):
+    if (not "beta" in extraArgs):
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
     else:
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\n*DISCLAIMER:* This is a beta build just for testing. Please, don't pull a Xiaomi Global on us and send logs when things gets broken.*\n*Maintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
