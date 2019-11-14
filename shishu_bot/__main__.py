@@ -52,7 +52,7 @@ def start_callback(bot, update):
 # callback function for device handler
 def device_callback(bot, update, args):
     if len(args) <= 0:
-        reply="You're getting there, but to use this command, be sure to specify your device. For example: `/device surnia`. Or, if you want to know all our shishufied (and currently supported) devices, use `/devicelist` or `/device list`."
+        reply="You're getting there, but to use this command, be sure to specify your device. For example: `/device surnia`, or, in case you want a beta version you can specify beta after your device name (For example: `/device surnia beta`) . Or, if you want to know all our shishufied (and currently supported) devices, use `/devicelist` or `/device list`."
         bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id,parse_mode="Markdown")
 
     codename = args[0]
