@@ -56,7 +56,10 @@ def device_callback(bot, update, args):
         bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id,parse_mode="Markdown")
 
     codename = args[0]
-    extraArgs = args[1]
+    try:
+        extraArgs = args[1]
+    except IndexError:
+        extraArgs = 'null'
 
     if "list" in codename:
         devicelist_callback(bot, update)
