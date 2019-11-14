@@ -66,18 +66,18 @@ def device_callback(bot, update, args):
         return
     else:
         if "beta" in extraArgs:
-            isBeta = true
+            isBeta = True
             ota_raw = get_beta_ota_raw(codename, bot, update)
             if ota_raw == 1:
                 ota_raw = get_ota_raw(codename, bot, update)
-                isBeta = false
+                isBeta = False
                 if ota_raw == 1:
                     reply="Sorry, but "+codename+" isn't on our official devices list"
                     bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
         else:
             ota_raw = get_ota_raw(codename, bot, update)
             if ota_raw == 1:
-                isBeta = false
+                isBeta = False
                 reply="Sorry, but "+codename+" isn't on our official devices list"
                 bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
 
@@ -93,10 +93,10 @@ def device_callback(bot, update, args):
     builds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename
 
     button_list = []
-    if ("xda-developers" in xdathread) and (isBeta == false):
+    if ("xda-developers" in xdathread) and (isBeta == False):
         button_list.extend([InlineKeyboardButton("XDA Thread", url=xdathread)])
 
-    if (isBeta == true):
+    if (isBeta == True):
         button_list.extend([
         InlineKeyboardButton("Latest Build", url=latestbeta),
         InlineKeyboardButton("Beta Builds", url=betabuilds),
@@ -109,7 +109,7 @@ def device_callback(bot, update, args):
         ])
 
     reply_buttons = InlineKeyboardMarkup(build_menu(button_list, n_cols=3))
-    if (isBeta == false):
+    if (isBeta == False):
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
     else:
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\n*DISCLAIMER:* This is a beta build just for testing. Please, don't pull a Xiaomi Global on us and send logs when things gets broken.*\n*Maintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
