@@ -81,12 +81,27 @@ def device_callback(bot, update, args):
                 reply="Sorry, but "+codename+" isn't on our official devices list"
                 bot.send_message(chat_id=update.message.chat.id, text=reply, reply_to_message_id=update.message.message_id)
 
-
-    maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
-    filename = re.findall(r"\\nfilename: (.*?)\\n", ota_raw)[0]
-    fullname = re.findall(r"\\nfullname: (.*?)\\n", ota_raw)[0]
-    xdathread = re.findall(r"\\nxdathread: (.*?)\\n", ota_raw)[0]
-    notes = re.findall(r"\\nnotes: (.*?)\\n", ota_raw)[0]
+    try:
+        maintainer = re.findall(r"\\nmaintainer: (.*?)\\n", ota_raw)[0]
+    except:
+        maintainer = 'null'
+    try:
+        filename = re.findall(r"\\nfilename: (.*?)\\n", ota_raw)[0]
+    except:
+        filename = 'null'
+    try:
+        fullname = re.findall(r"\\nfullname: (.*?)\\n", ota_raw)[0]
+    except:
+        fullname = 'null'
+    try:
+        xdathread = re.findall(r"\\nxdathread: (.*?)\\n", ota_raw)[0]
+    except:
+        xdathread = 'null'
+    try:
+        notes = re.findall(r"\\nnotes: (.*?)\\n", ota_raw)[0]
+    except:
+        notes = 'null'
+ 
     latest = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/"+filename
     latestbeta = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta/"+filename
     betabuilds = "http://downloads.sourceforge.net/project/bootleggersrom/builds/"+codename+"/beta"
