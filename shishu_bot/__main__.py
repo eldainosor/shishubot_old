@@ -127,7 +127,7 @@ def device_callback(bot, update, args):
     if (not "beta" in extraArgs):
         reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\nMaintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
     else:
-        reply_text ="*BootleggersROM for "+fullname+" ("+codename+")\n*DISCLAIMER:* This is a beta build just for testing. Please, don't pull a Xiaomi Global on us and send logs when things gets broken.*\n*Maintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n"
+        reply_text ="*BootleggersROM for "+fullname+" ("+codename+")*\n*Maintainer:* "+maintainer+"\n*Latest Build:* `"+filename+"`\n*DISCLAIMER:* This is a beta build just for testing. Please, don't pull a Xiaomi Global on us and send logs when things gets broken."
 
     bot.send_message(chat_id=update.message.chat_id, text=reply_text, parse_mode=ParseMode.MARKDOWN, reply_markup=reply_buttons, reply_to_message_id=update.message.message_id)
 
